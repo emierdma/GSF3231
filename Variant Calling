@@ -4,7 +4,7 @@
 
 mkdir Variantcall
 
-#copy genome file, snp file and aligned bam into Variantcall directory
+#copy genome file, snp file, and aligned bam into Variantcall directory
 
 scp assembly.fasta 
 scp c.elegans_WS275.snps.sorted.bed
