@@ -33,3 +33,25 @@ scp ~/Desktop/variant.py emierdma@carbonate.uits.iu.edu:/N/slate/emierdma/GSF323
 
 python variant.py --v N2.rmdup.mpileup.vcf --snp c.elegans.WS275.snps.sorted.bed --o N2variant.csv 
 python variant.py --v adr1.rmdup.mpileup.vcf --snp c.elegans.WS275.snps.sorted.bed --o adr1variant.csv
+
+#open csv in R studio to see how many rows it has
+
+library("tidyverse")
+
+library("GenomicRanges")
+
+variants <- read.csv("/N/slate/emierdma/GSF3231/Variantcall/N2variant.csv")
+
+View(variants)
+
+#if the table is >1,000,000 rows, the csv will not open in excel and needs to be split into parts
+
+var1 <- dplyr::slice(variants, 1:1000000)
+
+write.table(var1, "N2variants_1.tsv", sep = "\t", col.names = TRUE, row.names = FALSE, quote = FALSE)
+
+#repeat until whole table is split up. For final section you can use:
+
+var7 <- dplyr::slice(variants, 6000001:nrow(variants))
+
+#tsv files will now be in your Variantcall directory, can be copied to desktop and opened in excel for analysis.
