@@ -31,5 +31,5 @@ scp ~/Desktop/variant.py emierdma@carbonate.uits.iu.edu:/N/slate/emierdma/GSF323
 
 #convert vcf files to csv to open in excel
 
-python variant.py --v N2.rmdup.mpileup.vcf --snp WS275.snps.sorted.bed --o N2variant.csv 
-python variant.py --v adr1.rmdup.mpileup.vcf --snp WS275.snps.sorted.bed --o adr1variant.csv
+python variant.py --v N2.rmdup.mpileup.vcf --snp c.elegans.WS275.snps.sorted.bed --o N2variant.csv 
+python variant.py --v adr1.rmdup.mpileup.vcf --snp c.elegans.WS275.snps.sorted.bed --o adr1variant.csv
