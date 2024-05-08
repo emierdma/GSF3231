@@ -43,3 +43,10 @@ module load singularity
 
 #use the following command to run SAILOR. under "--singularity-args --'bind' you will have to give access to every single directory that has relevant files
 snakemake --snakefile /N/slate/emierdma/GSF3231/flare/workflow_sailor/Snakefile --configfile /N/slate/emierdma/GSF3231/flare/GSF3231-N2.json --use-singularity --singularity-args '--bind /N/slate/emierdma/GSF3231 --bind /N/slate/emierdma/GSF3231/genome --bind /N/slate/emierdma/GSF3231/flare/workflow_sailor/scripts --bind /N/slate/emierdma/GSF3231/flare/workflow_sailor --bind /N/slate/emierdma/GSF3231/results/flare_results' -j1
+
+#editing site annotation
+#in "annotation" conda environment (must have python==3.8.6, pybedtools, pandas)
+#must have annotation .bed file, geneset .gtf file, annotator.sailor.py, .bed files from flare_results directory (directory 7)
+python3 annotator.sailor.py --gtf c_elegans.PRJNA13758.WS275.canonical_geneset.gtf --fwd GSF3231-N2.merged.bam.fwd.readfiltered.formatted.varfiltered.snpfiltered.ranked.bed --rev GSF3231-N2.merged.bam.rev.readfiltered.formatted.varfiltered.snpfiltered.ranked.bed --wb c.elegans.WS275.annotation.final.bed --o /N/slate/emierdma/GSF3231/results/flare_results/adr1adr2.annotated.sites.csv
+
+
