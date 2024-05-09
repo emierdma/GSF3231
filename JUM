@@ -1,3 +1,28 @@
 #!/bin/bash
+#make jum directory in slate
+mkdir jum
+
 #create an environment for jum
 conda create -n jum -c bioconda samtools=1.3.1 bedtools=2.26.0 star r-base bioconductor-dexseq
+conda activate jum
+
+#Install Perl with required modules -- Array::Utils and Statistics::Descriptive
+wget -O- http://cpanmin.us | perl - -l ~/perl5 App::cpanminus local::lib
+module load perl
+cpanm Array::Utils 
+cpanm Statistics::Descriptive
+
+#Open R studio 4.2.1 (has to be 4.2.X or up)
+$ R
+> if (!require("BiocManager", quietly = TRUE))
+> install.packages("BiocManager")
+> BiocManager::install(version = "3.16")
+> BiocManager::install("DEXSeq")
+
+#Download JUM package from here (https://github.com/qqwang-berkeley/JUM/releases)
+#I downloaded JUM_3.0.0.tar.gz to desktop 
+#copy to slate directory from Desktop
+scp JUM_3.0.0.tar.gz /N/slate/emierdma/jum
+
+#in jum directory, unzip JUM_3.0.0.tar.gz
+tar -xf JUM_3.0.0.tar
