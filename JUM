@@ -26,3 +26,33 @@ scp JUM_3.0.0.tar.gz /N/slate/emierdma/jum
 
 #in jum directory, unzip JUM_3.0.0.tar.gz
 tar -xf JUM_3.0.0.tar
+
+# Copy and paste read files (.fastq) into jum directory
+
+#Assign Variables
+ASSEMBLY='ftp://ftp.wormbase.org/pub/wormbase/releases/WS275/species/c_elegans/PRJNA13758/c_elegans.PRJNA13758.WS275.genomic.fa.gz'
+ANNOTATION='ftp://ftp.wormbase.org/pub/wormbase/releases/WS275/species/c_elegans/PRJNA13758/c_elegans.PRJNA13758.WS275.canonical_geneset.gtf.gz'
+
+# Generate STAR Genome Index 
+# Make a directory to store the genome files
+mkdir -p genome/index
+
+
+# Download and unpack the genome assembly.
+curl $ASSEMBLY | gunzip > ./genome/assembly.fasta
+
+
+# Download and unpack the genome annotation.
+curl $ANNOTATION | gunzip > ./genome/annotation.gtf
+
+
+# Create the STAR genome index
+STAR --runThreadN 3 --runMode genomeGenerate --genomeDir genome/index --genomeFastaFiles genome/assembly.fasta --sjdbGTFfile genome/annotation.gtf --sjdbOverhang 99
+
+# 1st pass mapping and copy selected STAR outputs from the 1st mapping to a folder named as 1st_SJ 
+STAR --runThreadN 3 --genomeDir genome/index --outFileNamePrefix GSF3037-N2_1 --readFilesIn GSF3037-Hundley-EE_N2_germlines_5-1_S1_R1_001.fastq --outSJfilterReads Unique
+STAR --runThreadN 3 --genomeDir genome/index --outFileNamePrefix GSF3037-N2_2 --readFilesIn GSF3037-Hundley-EE_N2_germlines_5-2_S2_R1_001.fastq --outSJfilterReads Unique
+STAR --runThreadN 3 --genomeDir genome/index --outFileNamePrefix GSF3037-N2_3 --readFilesIn GSF3037-Hundley-EE_N2_germlines_5-3_S3_R1_001.fastq --outSJfilterReads Unique
+STAR --runThreadN 3 --genomeDir genome/index --outFileNamePrefix GSF3037-adr2_1 --readFilesIn GSF3037-Hundley-EE_adr2_germlines_5-2_S4_R1_001.fastq --outSJfilterReads Unique
+STAR --runThreadN 3 --genomeDir genome/index --outFileNamePrefix GSF3037-adr2_2 --readFilesIn GSF3037-Hundley-EE_adr2_germlines_5-3_S5_R1_001.fastq --outSJfilterReads Unique
+STAR --runThreadN 3 --genomeDir genome/index --outFileNamePrefix GSF3037-adr2_3 --readFilesIn GSF3037-Hundley-EE_adr2_germlines_5-4_S6_R1_001.fastq --outSJfilterReads Unique
