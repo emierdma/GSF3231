@@ -50,9 +50,9 @@ curl $ANNOTATION | gunzip > ./genome/annotation.gtf
 STAR --runThreadN 3 --runMode genomeGenerate --genomeDir genome/index --genomeFastaFiles genome/assembly.fasta --sjdbGTFfile genome/annotation.gtf --sjdbOverhang 99
 
 # 1st pass mapping and copy selected STAR outputs from the 1st mapping to a folder named as 1st_SJ 
-STAR --runThreadN 3 --genomeDir genome/index --outFileNamePrefix GSF3037-N2_1 --readFilesIn GSF3037-Hundley-EE_N2_germlines_5-1_S1_R1_001.fastq --outSJfilterReads Unique
-STAR --runThreadN 3 --genomeDir genome/index --outFileNamePrefix GSF3037-N2_2 --readFilesIn GSF3037-Hundley-EE_N2_germlines_5-2_S2_R1_001.fastq --outSJfilterReads Unique
-STAR --runThreadN 3 --genomeDir genome/index --outFileNamePrefix GSF3037-N2_3 --readFilesIn GSF3037-Hundley-EE_N2_germlines_5-3_S3_R1_001.fastq --outSJfilterReads Unique
-STAR --runThreadN 3 --genomeDir genome/index --outFileNamePrefix GSF3037-adr2_1 --readFilesIn GSF3037-Hundley-EE_adr2_germlines_5-2_S4_R1_001.fastq --outSJfilterReads Unique
-STAR --runThreadN 3 --genomeDir genome/index --outFileNamePrefix GSF3037-adr2_2 --readFilesIn GSF3037-Hundley-EE_adr2_germlines_5-3_S5_R1_001.fastq --outSJfilterReads Unique
-STAR --runThreadN 3 --genomeDir genome/index --outFileNamePrefix GSF3037-adr2_3 --readFilesIn GSF3037-Hundley-EE_adr2_germlines_5-4_S6_R1_001.fastq --outSJfilterReads Unique
+STAR --runThreadN 3 --genomeDir genome/index --outFileNamePrefix ctrl_1 --readFilesIn GSF3037-Hundley-EE_N2_germlines_5-1_S1_R1_001.fastq --outSJfilterReads Unique
+STAR --runThreadN 3 --genomeDir genome/index --outFileNamePrefix ctrl_2 --readFilesIn GSF3037-Hundley-EE_N2_germlines_5-2_S2_R1_001.fastq --outSJfilterReads Unique
+STAR --runThreadN 3 --genomeDir genome/index --outFileNamePrefix ctrl_3 --readFilesIn GSF3037-Hundley-EE_N2_germlines_5-3_S3_R1_001.fastq --outSJfilterReads Unique
+STAR --runThreadN 3 --genomeDir genome/index --outFileNamePrefix treat_1 --readFilesIn GSF3037-Hundley-EE_adr2_germlines_5-2_S4_R1_001.fastq --outSJfilterReads Unique
+STAR --runThreadN 3 --genomeDir genome/index --outFileNamePrefix treat_2 --readFilesIn GSF3037-Hundley-EE_adr2_germlines_5-3_S5_R1_001.fastq --outSJfilterReads Unique
+STAR --runThreadN 3 --genomeDir genome/index --outFileNamePrefix treat_3 --readFilesIn GSF3037-Hundley-EE_adr2_germlines_5-4_S6_R1_001.fastq --outSJfilterReads Unique
