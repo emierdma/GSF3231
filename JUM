@@ -95,3 +95,83 @@ samtools sort -o treat3Aligned.out_sorted.bam -T treat3_temp treat1Aligned.out.b
 samtools index treat3Aligned.out_sorted.bam
 
 rm *Aligned.out.bam
+
+# Under your working folder, you should have the following input files ready for JUM analysis ("*" indicates ctrl1, ctrl2, ctrl3, treat1, treat2 and treat3):
+# *Aligned.out.sam files
+# *SJ.out.tab files
+# *Aligned.out_sorted.bam files
+
+
+##### Running JUM_A.sh #####
+
+# Make sure all the scripts are now in /N/slate/emierdma/jum/JUM_3.0.0 
+# Run JUM_A.sh (Make sure sample names for condition 1 (ctrl) is alphabetically before those for condition 2 (treat)). I set N2 as ctrl and adr-2(-) as treat. 
+
+bash /N/slate/emierdma/jum/JUM_3.0.0/JUM_A.sh --Folder /N/slate/emierdma/jum/JUM_3.0.0 --JuncThreshold 5 --Condition1_fileNum_threshold 2 --Condition2_fileNum_threshold 2 --IRthreshold 5 --Readlength 100 --Thread 3 --Condition1SampleName ctrl_1,ctrl_2,ctrl_3 --Condition2SampleName treat_1,treat_2,treat_3
+
+# JUM_A.sh will generate a new folder called JUM_diff/ with results for downstream analysis.
+
+
+
+##### Running JUM_B.sh #####
+
+# Make changes to the experiment design file before running Rscript 
+
+cd /N/slate/emierdma/jum/JUM_3.0.0/
+
+vim experiment_design.txt 
+
+i
+
+      condition
+ctrl_1 control
+ctrl_2 control
+ctrl_3 control
+treat_1 treatment
+treat_2 treatment
+treat_3 treatment
+
+ESC + Shift + ZZ
+
+# The spaces should be all tab so that these are two different columns when opened in excel (I made an excel file myself to ensure this)
+
+# Copy and paste this file into JUM_diff folder 
+
+scp experiment_design.txt /N/slate/emierdma/jum/JUM_diff
+
+
+# Enter the JUM_diff/ folder and run the R script with a user-provided experiment design file
+
+cd JUM_diff/
+
+module load bioconductor 
+
+Rscript /N/slate/emierdma/jum/JUM_3.0.0/R_script_JUM.R experiment_design.txt > outputFile.Rout 2> errorFile.Rout
+
+# R_script_JUM.R will output a file called AS_differential.txt. Make sure that Step 2 successfully generates a new file called AS_differential.txt in the JUM_diff/ folder. Otherwise you can refer to the files outputFile.Rout and errorFile.Rout for troubleshooting  
+
+
+# Now run JUM_B.sh in the JUM_diff/ folder as follows: (It is advised to use p value curoff < 0.05. I used 1 for initial running)
+
+bash /N/slate/emierdma/jum/JUM_3.0.0/JUM_B.sh --Folder /N/slate/emierdma/jum/JUM_3.0.0 --Test pvalue --Cutoff 1 --TotalFileNum 6 --Condition1_fileNum_threshold 2 --Condition2_fileNum_threshold 2 --Condition1SampleName ctrl_1,ctrl_2,ctrl_3 --Condition2SampleName treat_1,treat_2,treat_3
+
+# JUM_B.sh will generate a new folder called FINAL_JUM_OUTPUT_$Test_$Cutoff that contains the results for downstream analysis.
+
+
+
+##### Running JUM_C.sh #####
+
+# Before you start, make sure you download annotation_transcriptname.gtf.refflat.txt file on Onedrive (Boyoon Yang > Bioinformatics > JUM folder) and put it in the JUM_diff/FINAL_JUM_OUTPUT_pvalue_1 folder
+# Note that this refflat file has transcript name in both column 1 and 2. Ideally, column 1 should have gene names instead so this has to be fixed in the future (had errors when putting gene names in column 1)
+# Run JUM_C.sh in the folder FINAL_JUM_OUTPUT_$Test_$Cutoff as follows:
+
+bash /N/slate/emierdma/jum/JUM_3.0.0/JUM_C.sh --Folder /N/slate/emierdma/jum/JUM_3.0.0 --Test pvalue --Cutoff 1 --TotalCondition1FileNum 3 --TotalCondition2FileNum 3 --REF annotation.gtf.refflat.txt
+
+# As soon as JUM_C.sh starts running, all output files from JUM_B.sh is overwritten by JUM_C.sh. If you face any error in this step, or wish to rerun JUM_C.sh, you will have to delete the output folder of JUM_B.sh, “FINAL_JUM_OUTPUT_pvalue_1” and start over from running JUM_B.sh. 
+# JUM_C.sh will output files with the suffix: *_final_simplified.txt and *_final_detailed.txt. These are the final output files from JUM.
+
+
+
+# After completion, copy and paste the output files to view results 
+
+
