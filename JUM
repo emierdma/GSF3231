@@ -107,7 +107,7 @@ rm *Aligned.out.bam
 # Make sure all the scripts are now in /N/slate/emierdma/jum/JUM_3.0.0 
 # Run JUM_A.sh (Make sure sample names for condition 1 (ctrl) is alphabetically before those for condition 2 (treat)). I set N2 as ctrl and adr-2(-) as treat. 
 
-bash /N/slate/emierdma/jum/JUM_3.0.0/JUM_A.sh --Folder /N/slate/emierdma/jum/JUM_3.0.0 --JuncThreshold 5 --Condition1_fileNum_threshold 2 --Condition2_fileNum_threshold 2 --IRthreshold 5 --Readlength 100 --Thread 3 --Condition1SampleName ctrl_1,ctrl_2,ctrl_3 --Condition2SampleName treat_1,treat_2,treat_3
+bash /N/slate/emierdma/jum/JUM_3.0.0/JUM_A.sh --Folder /N/slate/emierdma/jum/JUM_3.0.0 --JuncThreshold 5 --Condition1_fileNum_threshold 2 --Condition2_fileNum_threshold 2 --IRthreshold 5 --Readlength 100 --Thread 3 --Condition1SampleName ctrl1,ctrl2,ctrl3 --Condition2SampleName treat1,treat2,treat3
 
 # JUM_A.sh will generate a new folder called JUM_diff/ with results for downstream analysis.
 
