@@ -117,23 +117,23 @@ bash /N/slate/emierdma/jum/JUM_3.0.0/JUM_A.sh --Folder /N/slate/emierdma/jum/JUM
 
 # Make changes to the experiment design file before running Rscript 
 
-cd /N/slate/emierdma/jum/JUM_3.0.0/
+cd /N/slate/emierdma/jum/temp_JUM_A_run/JUM_3.0.0/
 
 vim experiment_design.txt 
 
 i
 
       condition
-ctrl_1 control
-ctrl_2 control
-ctrl_3 control
-treat_1 treatment
-treat_2 treatment
-treat_3 treatment
+ctrl1 control
+ctrl2 control
+ctrl3 control
+treat1 treatment
+treat2 treatment
+treat3 treatment
 
-ESC + Shift + ZZ
+esc :wq
 
-# The spaces should be all tab so that these are two different columns when opened in excel (I made an excel file myself to ensure this)
+# The spaces should be all tab so that these are two different columns when opened in excel 
 
 # Copy and paste this file into JUM_diff folder 
 
