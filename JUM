@@ -167,7 +167,7 @@ bash /N/slate/emierdma/jum/JUM_3.0.0/JUM_B.sh --Folder /N/slate/emierdma/jum/JUM
 # Note that this refflat file has transcript name in both column 1 and 2. Ideally, column 1 should have gene names instead so this has to be fixed in the future (had errors when putting gene names in column 1)
 # Run JUM_C.sh in the folder FINAL_JUM_OUTPUT_$Test_$Cutoff as follows:
 
-bash /N/slate/emierdma/jum/JUM_3.0.0/JUM_C.sh --Folder /N/slate/emierdma/jum/JUM_3.0.0 --Test pvalue --Cutoff 1 --TotalCondition1FileNum 3 --TotalCondition2FileNum 3 --REF annotation.gtf.refflat.txt
+bash /N/slate/emierdma/jum/JUM_3.0.0/JUM_C.sh --Folder /N/slate/emierdma/jum/JUM_3.0.0 --Test pvalue --Cutoff 0.05 --TotalCondition1FileNum 3 --TotalCondition2FileNum 3 --REF annotation_transcriptname.gtf.refflat.txt
 
 # As soon as JUM_C.sh starts running, all output files from JUM_B.sh is overwritten by JUM_C.sh. If you face any error in this step, or wish to rerun JUM_C.sh, you will have to delete the output folder of JUM_B.sh, “FINAL_JUM_OUTPUT_pvalue_1” and start over from running JUM_B.sh. 
 # JUM_C.sh will output files with the suffix: *_final_simplified.txt and *_final_detailed.txt. These are the final output files from JUM.
