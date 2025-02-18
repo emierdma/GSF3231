@@ -1,0 +1,47 @@
+#!/bin/bash
+
+# Open R studio on ThinLinc
+# Using Console, load tidyverse
+library(“tidyverse”)
+
+# In console
+library ("DESeq2")
+
+countdata <- read.table("/N/slate/emierdma/GSF3231/results/counts/counts.tsv", header=TRUE,row.names = 1)
+
+countdata <- countdata[,6:ncol(countdata)]
+
+colnames(countdata)
+
+# once column names are as you like:
+
+countdata <- as.matrix(countdata)
+
+countdata <- countdata[,c("adr1_rep1","adr1_rep2","adr1_rep3","N2_rep1","N2_rep2","N2_rep3")]
+(condition <- factor(c(rep("b",3),rep("a",3))))
+(coldata <- data.frame(row.names=colnames(countdata),condition))
+
+dds <- DESeqDataSetFromMatrix(countData = countdata,colData = coldata, design=~condition)
+
+keep = rowSums(counts(dds)) >= 1
+
+dds <- dds[keep,]
+
+dds <- DESeq(dds)
+
+res <- results(dds)
+
+resdata <- merge(as.data.frame(res),as.data.frame(counts(dds,normalized=TRUE)),by="row.names",sort=FALSE)
+
+names(resdata)[1] <- "Gene"
+
+write.csv(resdata,file="/N/slate/emierdma/GSF3231/results/N2_vs_adr1_deseq.csv")
+
+# file can now be found in your results directory
+
+# move file to desktop
+# in terminal (outside thinlinc)
+
+scp emierdma@carbonate.uits.iu.edu:/N/slate/emierdma/GSF3231/results/N2_vs_adr1_deseq.csv ~/Desktop
+
+# open file in Excel and analyze
