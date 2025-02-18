@@ -1,20 +1,9 @@
 #!/bin/bash
-#in GSF3231 directory
-mkdir flare
-
-#move merged bamfiles into flare directory
-cp *.merged.bam /N/slate/emierdma/GSF3231/flare
-
-#copy bedfile and workflow_sailor scripts to flare directory
-#in HundleyLab project space FLARE directory
-scp c.elegans.WS275.snps.nostrand.sorted.bed /N/slate/emierdma/GSF3231/flare
-scp -r workflow_sailor /N/slate/emierdma/GSF3231/flare
-
-#create a .json file (on text editor Pluma) with the following contents (I saved it as GSF3231-N2.json):
+#create a .json file (on text editor Pluma) with the following contents (I saved it as GSF3231-N2rep1.json):
 {
 	"samples_path": "/N/slate/emierdma/GSF3231/flare",
 	"samples": [ 
-	"GSF3231-EE-N2.merged.bam"
+	"GSF3231-EE-N2_rep1_Aligned.sortedByCoord.out.bam"
 	],
 	"reverse_stranded": true,
 	"reference_fasta": "/N/slate/emierdma/GSF3231/genome/assembly.fasta",
@@ -23,30 +12,19 @@ scp -r workflow_sailor /N/slate/emierdma/GSF3231/flare
 	"output_dir": "/N/slate/emierdma/GSF3231/results/flare_results"
 }
 
-#copy .json file to directory
-scp GSF3587-N2_ctrl.json /N/slate/emierdma/GSF3231/flare
-
-#make all workflow_sailor scrips executable
-chmod +x filename
-
-#in rnaseq directory
-#install snakemake
-conda install -c bioconda -c conda-forge snakemake
-
-#in GSF3231/results
-mkdir flare_results
-
-#in interactive terminal
 #in flare directory
+#load "rnaseq" conda environment
+module load conda
+conda activate rnaseq
+
 #load singularity every single time you run 
 module load singularity
 
 #use the following command to run SAILOR. under "--singularity-args --'bind' you will have to give access to every single directory that has relevant files
-snakemake --snakefile /N/slate/emierdma/GSF3231/flare/workflow_sailor/Snakefile --configfile /N/slate/emierdma/GSF3231/flare/GSF3231-N2.json --use-singularity --singularity-args '--bind /N/slate/emierdma/GSF3231 --bind /N/slate/emierdma/GSF3231/genome --bind /N/slate/emierdma/GSF3231/flare/workflow_sailor/scripts --bind /N/slate/emierdma/GSF3231/flare/workflow_sailor --bind /N/slate/emierdma/GSF3231/results/flare_results' -j1
+snakemake --snakefile /N/slate/emierdma/GSF3231/flare/workflow_sailor/Snakefile --configfile /N/slate/emierdma/GSF3231/flare/GSF3231-N2rep1.json --use-singularity --singularity-args '--bind /N/slate/emierdma/GSF3231 --bind /N/slate/emierdma/GSF3231/genome --bind /N/slate/emierdma/GSF3231/flare/workflow_sailor/scripts --bind /N/slate/emierdma/GSF3231/flare/workflow_sailor --bind /N/slate/emierdma/GSF3231/results/flare_results' -j1
 
 #editing site annotation
 #in "annotation" conda environment (must have python==3.8.6, pybedtools, pandas)
 #must have annotation .bed file, geneset .gtf file, annotator.sailor.py, .bed files from flare_results directory (directory 7)
-python3 annotator.sailor.py --gtf c_elegans.PRJNA13758.WS275.canonical_geneset.gtf --fwd GSF3231-N2.merged.bam.fwd.readfiltered.formatted.varfiltered.snpfiltered.ranked.bed --rev GSF3231-N2.merged.bam.rev.readfiltered.formatted.varfiltered.snpfiltered.ranked.bed --wb c.elegans.WS275.annotation.final.bed --o /N/slate/emierdma/GSF3231/results/flare_results/adr1adr2.annotated.sites.csv
-
+python3 annotator.sailor.py --gtf c_elegans.PRJNA13758.WS275.canonical_geneset.gtf --fwd GSF3231-EE-N2_rep1_Aligned.sortedByCoord.out.bam.fwd.readfiltered.formatted.varfiltered.snpfiltered.ranked.bed --rev GSF3231-EE-N2_rep1_Aligned.sortedByCoord.out.bam.rev.readfiltered.formatted.varfiltered.snpfiltered.ranked.bed --wb c.elegans.WS275.annotation.final.bed --o /N/slate/emierdma/GSF3231/results/flare_results/N2_rep1.annotated.sites.csv
 
